@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 15 Des 2025 pada 05.17
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: Dec 15, 2025 at 10:36 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.4.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin_page_visits`
+-- Table structure for table `admin_page_visits`
 --
 
 CREATE TABLE `admin_page_visits` (
@@ -35,17 +35,17 @@ CREATE TABLE `admin_page_visits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `admin_page_visits`
+-- Dumping data for table `admin_page_visits`
 --
 
 INSERT INTO `admin_page_visits` (`visit_id`, `user_id`, `page_name`, `last_visit_at`) VALUES
-(1, 4, 'orders', '2025-12-15 03:55:42'),
-(3, 4, 'customers', '2025-12-15 02:01:01');
+(1, 4, 'orders', '2025-12-15 10:04:46'),
+(3, 4, 'customers', '2025-12-15 10:04:48');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `cart`
+-- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
@@ -58,7 +58,7 @@ CREATE TABLE `cart` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `email_verifications`
+-- Table structure for table `email_verifications`
 --
 
 CREATE TABLE `email_verifications` (
@@ -75,7 +75,7 @@ CREATE TABLE `email_verifications` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `notifications`
+-- Table structure for table `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -92,7 +92,7 @@ CREATE TABLE `notifications` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -127,7 +127,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order_history`
+-- Table structure for table `order_history`
 --
 
 CREATE TABLE `order_history` (
@@ -148,7 +148,7 @@ CREATE TABLE `order_history` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order_items`
+-- Table structure for table `order_items`
 --
 
 CREATE TABLE `order_items` (
@@ -164,7 +164,7 @@ CREATE TABLE `order_items` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `password_resets`
+-- Table structure for table `password_resets`
 --
 
 CREATE TABLE `password_resets` (
@@ -179,7 +179,7 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `products`
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -211,7 +211,7 @@ CREATE TABLE `products` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `shipping_addresses`
+-- Table structure for table `shipping_addresses`
 --
 
 CREATE TABLE `shipping_addresses` (
@@ -232,7 +232,7 @@ CREATE TABLE `shipping_addresses` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `shipping_couriers`
+-- Table structure for table `shipping_couriers`
 --
 
 CREATE TABLE `shipping_couriers` (
@@ -245,7 +245,7 @@ CREATE TABLE `shipping_couriers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `shipping_couriers`
+-- Dumping data for table `shipping_couriers`
 --
 
 INSERT INTO `shipping_couriers` (`courier_id`, `courier_code`, `courier_name`, `logo_url`, `is_active`, `created_at`) VALUES
@@ -258,7 +258,7 @@ INSERT INTO `shipping_couriers` (`courier_id`, `courier_code`, `courier_name`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `shipping_services`
+-- Table structure for table `shipping_services`
 --
 
 CREATE TABLE `shipping_services` (
@@ -276,7 +276,7 @@ CREATE TABLE `shipping_services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `shipping_services`
+-- Dumping data for table `shipping_services`
 --
 
 INSERT INTO `shipping_services` (`service_id`, `courier_id`, `service_code`, `service_name`, `description`, `base_cost`, `estimated_days_min`, `estimated_days_max`, `is_active`, `display_order`, `created_at`) VALUES
@@ -294,7 +294,7 @@ INSERT INTO `shipping_services` (`service_id`, `courier_id`, `service_code`, `se
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tracking_statuses`
+-- Table structure for table `tracking_statuses`
 --
 
 CREATE TABLE `tracking_statuses` (
@@ -311,7 +311,7 @@ CREATE TABLE `tracking_statuses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `tracking_statuses`
+-- Dumping data for table `tracking_statuses`
 --
 
 INSERT INTO `tracking_statuses` (`status_id`, `status_code`, `status_name`, `status_name_id`, `icon_svg`, `color`, `step_order`, `is_active`, `description`, `created_at`) VALUES
@@ -328,7 +328,7 @@ INSERT INTO `tracking_statuses` (`status_id`, `status_code`, `status_name`, `sta
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -350,7 +350,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `full_name`, `phone`, `address`, `role`, `created_at`, `updated_at`, `profile_picture`, `birth_date`, `email_verified`, `is_active`, `verified_at`) VALUES
@@ -361,7 +361,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `full_name`, `p
 --
 
 --
--- Indeks untuk tabel `admin_page_visits`
+-- Indexes for table `admin_page_visits`
 --
 ALTER TABLE `admin_page_visits`
   ADD PRIMARY KEY (`visit_id`),
@@ -369,7 +369,7 @@ ALTER TABLE `admin_page_visits`
   ADD KEY `idx_user_page` (`user_id`,`page_name`);
 
 --
--- Indeks untuk tabel `cart`
+-- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`cart_id`),
@@ -378,7 +378,7 @@ ALTER TABLE `cart`
   ADD KEY `idx_product_id` (`product_id`);
 
 --
--- Indeks untuk tabel `email_verifications`
+-- Indexes for table `email_verifications`
 --
 ALTER TABLE `email_verifications`
   ADD PRIMARY KEY (`verification_id`),
@@ -388,7 +388,7 @@ ALTER TABLE `email_verifications`
   ADD KEY `idx_expires` (`expires_at`);
 
 --
--- Indeks untuk tabel `notifications`
+-- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`notification_id`),
@@ -397,7 +397,7 @@ ALTER TABLE `notifications`
   ADD KEY `idx_created_at` (`created_at`);
 
 --
--- Indeks untuk tabel `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
@@ -409,7 +409,7 @@ ALTER TABLE `orders`
   ADD KEY `idx_orders_estimated_delivery` (`estimated_delivery_date`);
 
 --
--- Indeks untuk tabel `order_history`
+-- Indexes for table `order_history`
 --
 ALTER TABLE `order_history`
   ADD PRIMARY KEY (`history_id`),
@@ -419,7 +419,7 @@ ALTER TABLE `order_history`
   ADD KEY `idx_history_status_detail` (`status_detail`);
 
 --
--- Indeks untuk tabel `order_items`
+-- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`order_item_id`),
@@ -429,14 +429,14 @@ ALTER TABLE `order_items`
   ADD KEY `idx_product_id` (`product_id`);
 
 --
--- Indeks untuk tabel `password_resets`
+-- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`reset_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indeks untuk tabel `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`),
@@ -446,7 +446,7 @@ ALTER TABLE `products`
   ADD KEY `idx_is_featured` (`is_featured`);
 
 --
--- Indeks untuk tabel `shipping_addresses`
+-- Indexes for table `shipping_addresses`
 --
 ALTER TABLE `shipping_addresses`
   ADD PRIMARY KEY (`address_id`),
@@ -454,7 +454,7 @@ ALTER TABLE `shipping_addresses`
   ADD KEY `idx_default_address` (`user_id`,`is_default`);
 
 --
--- Indeks untuk tabel `shipping_couriers`
+-- Indexes for table `shipping_couriers`
 --
 ALTER TABLE `shipping_couriers`
   ADD PRIMARY KEY (`courier_id`),
@@ -463,7 +463,7 @@ ALTER TABLE `shipping_couriers`
   ADD KEY `idx_active` (`is_active`);
 
 --
--- Indeks untuk tabel `shipping_services`
+-- Indexes for table `shipping_services`
 --
 ALTER TABLE `shipping_services`
   ADD PRIMARY KEY (`service_id`),
@@ -472,7 +472,7 @@ ALTER TABLE `shipping_services`
   ADD KEY `idx_display_order` (`display_order`);
 
 --
--- Indeks untuk tabel `tracking_statuses`
+-- Indexes for table `tracking_statuses`
 --
 ALTER TABLE `tracking_statuses`
   ADD PRIMARY KEY (`status_id`),
@@ -481,7 +481,7 @@ ALTER TABLE `tracking_statuses`
   ADD KEY `idx_active` (`is_active`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
@@ -490,146 +490,146 @@ ALTER TABLE `users`
   ADD KEY `idx_is_active` (`is_active`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin_page_visits`
+-- AUTO_INCREMENT for table `admin_page_visits`
 --
 ALTER TABLE `admin_page_visits`
-  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
--- AUTO_INCREMENT untuk tabel `cart`
+-- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
   MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `email_verifications`
+-- AUTO_INCREMENT for table `email_verifications`
 --
 ALTER TABLE `email_verifications`
   MODIFY `verification_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `notifications`
+-- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
   MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `order_history`
+-- AUTO_INCREMENT for table `order_history`
 --
 ALTER TABLE `order_history`
   MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `order_items`
+-- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
   MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `password_resets`
+-- AUTO_INCREMENT for table `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `reset_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `reset_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `products`
+-- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `shipping_addresses`
+-- AUTO_INCREMENT for table `shipping_addresses`
 --
 ALTER TABLE `shipping_addresses`
   MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `shipping_couriers`
+-- AUTO_INCREMENT for table `shipping_couriers`
 --
 ALTER TABLE `shipping_couriers`
   MODIFY `courier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT untuk tabel `shipping_services`
+-- AUTO_INCREMENT for table `shipping_services`
 --
 ALTER TABLE `shipping_services`
   MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT untuk tabel `tracking_statuses`
+-- AUTO_INCREMENT for table `tracking_statuses`
 --
 ALTER TABLE `tracking_statuses`
   MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `cart`
+-- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `notifications`
+-- Constraints for table `notifications`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `fk_orders_shipping_service` FOREIGN KEY (`shipping_service_id`) REFERENCES `shipping_services` (`service_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `order_history`
+-- Constraints for table `order_history`
 --
 ALTER TABLE `order_history`
   ADD CONSTRAINT `order_history_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_history_ibfk_2` FOREIGN KEY (`changed_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL;
 
 --
--- Ketidakleluasaan untuk tabel `order_items`
+-- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
 
 --
--- Ketidakleluasaan untuk tabel `password_resets`
+-- Constraints for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `shipping_addresses`
+-- Constraints for table `shipping_addresses`
 --
 ALTER TABLE `shipping_addresses`
   ADD CONSTRAINT `shipping_addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `shipping_services`
+-- Constraints for table `shipping_services`
 --
 ALTER TABLE `shipping_services`
   ADD CONSTRAINT `shipping_services_ibfk_1` FOREIGN KEY (`courier_id`) REFERENCES `shipping_couriers` (`courier_id`) ON DELETE CASCADE;

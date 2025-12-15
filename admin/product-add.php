@@ -24,11 +24,11 @@ $success = '';
 // ===== PROSES TAMBAH PRODUK BARU =====
 if(isset($_POST['add_product'])) {
     // Ambil dan bersihkan data dari form
-    $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
-    $category = mysqli_real_escape_string($conn, $_POST['category']);
-    $price = mysqli_real_escape_string($conn, $_POST['price']);
-    $description = mysqli_real_escape_string($conn, $_POST['description']);
-    $condition_item = mysqli_real_escape_string($conn, $_POST['condition_item']);
+    $product_name = escape($_POST['product_name']);
+    $category = escape($_POST['category']);
+    $price = escape($_POST['price']);
+    $description = escape($_POST['description']);
+    $condition_item = escape($_POST['condition_item']);
     $is_active = 1; // Produk baru selalu aktif
     $is_featured = isset($_POST['is_featured']) ? 1 : 0; // Cek apakah ditandai sebagai featured
     
@@ -299,13 +299,13 @@ if(isset($_POST['add_product'])) {
                             <div class="form-grid" style="gap: 24px;">
                                 <div class="form-group">
                                     <label>Nama Produk *</label>
-                                    <input type="text" name="product_name" class="form-input" required placeholder="contoh: Jaket Denim Vintage">
+                                    <input type="text" name="product_name" class="form-input" placeholder="contoh: Jaket Denim Vintage">
                                     <small style="color: #6b7280; font-size: 12px; margin-top: 4px; display: block;">Nama yang jelas dan deskriptif untuk produk Anda</small>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Kategori *</label>
-                                    <select name="category" class="form-input" required>
+                                    <select name="category" class="form-input">
                                         <option value="">Pilih Kategori</option>
                                         <option value="Jacket">Jacket</option>
                                         <option value="Shirt">Shirt</option>
@@ -330,7 +330,7 @@ if(isset($_POST['add_product'])) {
 
                                 <div class="form-group">
                                     <label>Harga Jual (Rp) *</label>
-                                    <input type="number" name="price" class="form-input" required min="0" placeholder="contoh: 150000">
+                                    <input type="number" name="price" class="form-input" min="0" placeholder="contoh: 150000">
                                     <small style="color: #6b7280; font-size: 12px; margin-top: 4px; display: block;">Harga jual produk</small>
                                 </div>
                             </div>
@@ -438,7 +438,7 @@ if(isset($_POST['add_product'])) {
                             <div class="form-grid" style="gap: 24px;">
                                 <div class="form-group form-group-full">
                                     <label>Deskripsi Produk *</label>
-                                    <textarea name="description" class="form-input" rows="6" required placeholder="Deskripsikan produk secara detail...&#10;&#10;Contoh:&#10;- Material dan kualitas kain&#10;- Fitur unik&#10;- Detail kondisi&#10;- Informasi ukuran dan fit"></textarea>
+                                    <textarea name="description" class="form-input" rows="6" placeholder="Deskripsikan produk secara detail...&#10;&#10;Contoh:&#10;- Material dan kualitas kain&#10;- Fitur unik&#10;- Detail kondisi&#10;- Informasi ukuran dan fit"></textarea>
                                     <small style="color: #6b7280; font-size: 12px; margin-top: 4px; display: block;">Berikan deskripsi lengkap untuk membantu pembeli</small>
                                 </div>
 
@@ -509,7 +509,7 @@ if(isset($_POST['add_product'])) {
                             <div class="form-grid" style="gap: 24px;">
                                 <div class="form-group">
                                     <label>Kondisi *</label>
-                                    <select name="condition_item" class="form-input" required>
+                                    <select name="condition_item" class="form-input">
                                         <option value="">Pilih Kondisi</option>
                                         <option value="Excellent">Excellent - Seperti baru, tidak ada tanda pakai</option>
                                         <option value="Very Good">Very Good - Tanda pakai minimal</option>
@@ -613,32 +613,66 @@ if(isset($_POST['add_product'])) {
         let uploadedImagesCount = 0;
         let nextSlotToActivate = 2; // Next slot yang akan diaktifkan setelah upload
         
+        // Safe toast function with fallback
+        function safeToast(type, message) {
+            if (typeof window.Toast !== 'undefined' && window.Toast[type]) {
+                window.Toast[type](message);
+            } else if (typeof window['toast' + type.charAt(0).toUpperCase() + type.slice(1)] === 'function') {
+                window['toast' + type.charAt(0).toUpperCase() + type.slice(1)](message);
+            } else {
+                console.log(`[${type.toUpperCase()}] ${message}`);
+            }
+        }
+        
         // Handle image upload for each slot
         function handleImageUpload(slotNumber, input) {
+            console.log('handleImageUpload called for slot:', slotNumber);
+            
             const file = input.files[0];
-            if (!file) return;
+            if (!file) {
+                console.log('No file selected');
+                return;
+            }
+            
+            console.log('File selected:', file.name, file.size, file.type);
             
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                toastError('File harus berupa gambar!');
+                safeToast('error', 'File harus berupa gambar!');
+                alert('File harus berupa gambar!');
                 input.value = '';
                 return;
             }
             
             // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                toastError('Ukuran file maksimal 5MB!');
+                safeToast('error', 'Ukuran file maksimal 5MB!');
+                alert('Ukuran file maksimal 5MB!');
                 input.value = '';
                 return;
             }
             
+            console.log('File validation passed, reading file...');
+            
             // Read and preview image
             const reader = new FileReader();
             reader.onload = function(e) {
+                console.log('File read successfully, showing preview...');
+                
                 const slot = document.querySelector(`.image-slot[data-slot="${slotNumber}"]`);
+                if (!slot) {
+                    console.error('Slot not found:', slotNumber);
+                    return;
+                }
+                
                 const uploadArea = slot.querySelector('.upload-area');
                 const previewArea = slot.querySelector('.preview-area');
                 const previewImg = slot.querySelector('.preview-img');
+                
+                if (!uploadArea || !previewArea || !previewImg) {
+                    console.error('Required elements not found in slot');
+                    return;
+                }
                 
                 // Show preview
                 previewImg.src = e.target.result;
@@ -647,24 +681,38 @@ if(isset($_POST['add_product'])) {
                 
                 // Update counter
                 uploadedImagesCount++;
+                console.log('Image uploaded successfully. Total:', uploadedImagesCount);
                 
                 // Show success toast
-                toastSuccess(`Foto ${slotNumber} berhasil ditambahkan!`);
+                safeToast('success', `Foto ${slotNumber} berhasil ditambahkan!`);
                 
                 // Activate next slot if available (max 8 slots visible)
                 if (nextSlotToActivate <= 8) {
                     activateNextSlot();
                 }
             };
+            
+            reader.onerror = function() {
+                console.error('Failed to read file');
+                safeToast('error', 'Gagal membaca file!');
+            };
+            
             reader.readAsDataURL(file);
         }
         
         // Activate next empty slot
         function activateNextSlot() {
-            if (nextSlotToActivate > 8) return; // Max 8 slots
+            console.log('activateNextSlot called. Next slot:', nextSlotToActivate);
+            
+            if (nextSlotToActivate > 8) {
+                console.log('Max slots reached (8)');
+                return; // Max 8 slots
+            }
             
             const nextSlot = document.querySelector(`.image-slot[data-slot="${nextSlotToActivate}"]`);
             if (nextSlot && nextSlot.classList.contains('empty-slot')) {
+                console.log('Activating slot:', nextSlotToActivate);
+                
                 // Remove empty-slot class
                 nextSlot.classList.remove('empty-slot');
                 nextSlot.classList.add('active-slot');
@@ -690,15 +738,30 @@ if(isset($_POST['add_product'])) {
                 `;
                 
                 nextSlotToActivate++;
+                console.log('Slot activated. Next slot will be:', nextSlotToActivate);
+            } else {
+                console.log('Slot not found or not empty');
             }
         }
         
         // Remove image from slot
         function removeImage(slotNumber) {
+            console.log('removeImage called for slot:', slotNumber);
+            
             const slot = document.querySelector(`.image-slot[data-slot="${slotNumber}"]`);
-            const input = slot.querySelector('.image-input');
+            if (!slot) {
+                console.error('Slot not found:', slotNumber);
+                return;
+            }
+            
+            const input = slot.querySelector('.image-input') || slot.querySelector('input[type="file"]');
             const uploadArea = slot.querySelector('.upload-area');
             const previewArea = slot.querySelector('.preview-area');
+            
+            if (!input || !uploadArea || !previewArea) {
+                console.error('Required elements not found in slot');
+                return;
+            }
             
             // Clear input
             input.value = '';
@@ -709,30 +772,106 @@ if(isset($_POST['add_product'])) {
             
             // Update counter
             uploadedImagesCount--;
+            console.log('Image removed. Total:', uploadedImagesCount);
             
-            toastInfo(`Foto ${slotNumber} dihapus`);
+            safeToast('info', `Foto ${slotNumber} dihapus`);
         }
         
         // Validate form before submit
-        document.getElementById('productForm').addEventListener('submit', function(e) {
-            if (uploadedImagesCount === 0) {
-                e.preventDefault();
-                toastError('Minimal upload 1 foto produk!');
-                switchTab(1); // Switch to image tab
-                return false;
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('productForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    console.log('Form submit triggered. Uploaded images:', uploadedImagesCount);
+                    
+                    // Validasi manual untuk semua field required
+                    const productName = form.querySelector('[name="product_name"]').value.trim();
+                    const category = form.querySelector('[name="category"]').value;
+                    const price = form.querySelector('[name="price"]').value;
+                    const description = form.querySelector('[name="description"]').value.trim();
+                    const condition = form.querySelector('[name="condition_item"]').value;
+                    
+                    // Cek field kosong
+                    if (!productName) {
+                        e.preventDefault();
+                        safeToast('error', 'Nama produk harus diisi!');
+                        alert('Nama produk harus diisi!');
+                        switchTab(0); // Tab 1: Info Dasar
+                        form.querySelector('[name="product_name"]').focus();
+                        return false;
+                    }
+                    
+                    if (!category) {
+                        e.preventDefault();
+                        safeToast('error', 'Kategori harus dipilih!');
+                        alert('Kategori harus dipilih!');
+                        switchTab(0); // Tab 1: Info Dasar
+                        form.querySelector('[name="category"]').focus();
+                        return false;
+                    }
+                    
+                    if (!price || price <= 0) {
+                        e.preventDefault();
+                        safeToast('error', 'Harga harus diisi dengan benar!');
+                        alert('Harga harus diisi dengan benar!');
+                        switchTab(0); // Tab 1: Info Dasar
+                        form.querySelector('[name="price"]').focus();
+                        return false;
+                    }
+                    
+                    // Cek gambar
+                    if (uploadedImagesCount === 0) {
+                        e.preventDefault();
+                        safeToast('error', 'Minimal upload 1 foto produk!');
+                        alert('Minimal upload 1 foto produk!');
+                        switchTab(1); // Tab 2: Gambar
+                        return false;
+                    }
+                    
+                    // Cek deskripsi
+                    if (!description) {
+                        e.preventDefault();
+                        safeToast('error', 'Deskripsi produk harus diisi!');
+                        alert('Deskripsi produk harus diisi!');
+                        switchTab(2); // Tab 3: Deskripsi
+                        form.querySelector('[name="description"]').focus();
+                        return false;
+                    }
+                    
+                    // Cek kondisi
+                    if (!condition) {
+                        e.preventDefault();
+                        safeToast('error', 'Kondisi produk harus dipilih!');
+                        alert('Kondisi produk harus dipilih!');
+                        switchTab(3); // Tab 4: Status
+                        form.querySelector('[name="condition_item"]').focus();
+                        return false;
+                    }
+                    
+                    console.log('All validations passed. Submitting form...');
+                    return true;
+                });
             }
         });
+        
+        // Initialize on page load
+        console.log('=== Product Add Page Script Loaded ===');
+        console.log('Toast available:', typeof window.Toast !== 'undefined');
+        console.log('toastSuccess available:', typeof window.toastSuccess === 'function');
+        console.log('toastError available:', typeof window.toastError === 'function');
         
         // Show toast notifications for success/error messages
         <?php if($success): ?>
             window.addEventListener('DOMContentLoaded', function() {
-                toastSuccess('<?php echo addslashes($success); ?>');
+                console.log('Showing success message');
+                safeToast('success', '<?php echo addslashes($success); ?>');
             });
         <?php endif; ?>
         
         <?php if($error): ?>
             window.addEventListener('DOMContentLoaded', function() {
-                toastError('<?php echo addslashes($error); ?>');
+                console.log('Showing error message');
+                safeToast('error', '<?php echo addslashes($error); ?>');
             });
         <?php endif; ?>
     </script>

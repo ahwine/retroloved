@@ -1538,6 +1538,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     <script src="<?php echo $base_url; ?>assets/js/toast.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/modal.js"></script>
+    <script src="<?php echo $base_url; ?>assets/js/confirm-modal.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/loading.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/validation.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/accessibility.js"></script>
@@ -1725,9 +1726,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 );
             } else {
-                // Fallback jika confirmModal tidak tersedia
-                if (confirm('Yakin ingin menghapus alamat ini?')) {
-                    document.getElementById('deleteAddressForm' + addressId).submit();
+                // Fallback ke custom confirm modal
+                if (typeof showConfirm === 'function') {
+                    showConfirm(
+                        'Yakin ingin menghapus alamat ini? Tindakan ini tidak dapat dibatalkan.',
+                        function() {
+                            document.getElementById('deleteAddressForm' + addressId).submit();
+                        },
+                        {
+                            title: 'Hapus Alamat',
+                            confirmText: 'Ya, Hapus',
+                            cancelText: 'Batal',
+                            isDanger: true
+                        }
+                    );
+                } else {
+                    console.error('Modal konfirmasi tidak tersedia');
                 }
             }
         };

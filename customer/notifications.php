@@ -71,13 +71,33 @@ if(isset($_GET['read_all'])) {
 // Get filter
 $filter = isset($_GET['filter']) ? escape($_GET['filter']) : 'all';
 
-// Build query based on filter
+// Debug: Log filter value
+error_log("Notification Filter: " . $filter);
+
+// Build query based on filter - FIXED: Kelompokkan berdasarkan status
 $notifications_query = "SELECT * FROM notifications WHERE user_id = '$user_id'";
 if($filter != 'all') {
     $notifications_query .= " AND type = '$filter'";
 }
-$notifications_query .= " ORDER BY created_at DESC";
+// Order by: status priority, then by created_at DESC
+$notifications_query .= " ORDER BY 
+    CASE type
+        WHEN 'order_pending' THEN 1
+        WHEN 'order_confirmed' THEN 2
+        WHEN 'order_shipped' THEN 3
+        WHEN 'order_delivered' THEN 4
+        WHEN 'order_cancelled' THEN 5
+        ELSE 6
+    END,
+    created_at DESC";
+
+// Debug: Log query
+error_log("Notification Query: " . $notifications_query);
+
 $notifications = query($notifications_query);
+
+// Debug: Log result count
+error_log("Notification Count: " . mysqli_num_rows($notifications));
 
 // Count unread
 $unread_count_query = "SELECT COUNT(*) as count FROM notifications WHERE user_id = '$user_id' AND is_read = 0";
@@ -302,16 +322,17 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
         
         /* Filter Tabs */
         .filter-tabs {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-bottom: 30px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            flex-wrap: wrap; /* Allow wrapping instead of scroll */
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .filter-tab {
-            padding: 10px 20px;
+            padding: 12px 20px;
             background: white;
             border: 2px solid #E5E7EB;
             border-radius: 8px;
@@ -324,8 +345,9 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
             white-space: nowrap;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            flex-shrink: 0; /* Prevent shrinking on wrap */
+            text-align: center;
         }
         
         .filter-tab:hover {
@@ -414,12 +436,20 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
             }
             
             .filter-tabs {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
+                max-width: 100%;
             }
             
             .filter-tab {
-                padding: 8px 16px;
-                font-size: 13px;
+                padding: 10px 12px;
+                font-size: 12px;
+                gap: 6px;
+            }
+            
+            .filter-tab svg {
+                width: 14px;
+                height: 14px;
             }
             
             .notification-actions {
@@ -548,9 +578,7 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
         <div class="filter-tabs">
             <a href="notifications.php?filter=all" class="filter-tab <?php echo $filter == 'all' ? 'active' : ''; ?>">
                 Semua Notifikasi
-                <?php if($count_all > 0): ?>
-                    <span class="filter-badge"><?php echo $count_all; ?></span>
-                <?php endif; ?>
+                <span class="filter-badge"><?php echo $count_all; ?></span>
             </a>
             <a href="notifications.php?filter=order_pending" class="filter-tab <?php echo $filter == 'order_pending' ? 'active' : ''; ?>">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -558,18 +586,14 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
                     <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
                 Pending
-                <?php if($count_pending > 0): ?>
-                    <span class="filter-badge"><?php echo $count_pending; ?></span>
-                <?php endif; ?>
+                <span class="filter-badge"><?php echo $count_pending; ?></span>
             </a>
             <a href="notifications.php?filter=order_confirmed" class="filter-tab <?php echo $filter == 'order_confirmed' ? 'active' : ''; ?>">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
                 Dikonfirmasi
-                <?php if($count_confirmed > 0): ?>
-                    <span class="filter-badge"><?php echo $count_confirmed; ?></span>
-                <?php endif; ?>
+                <span class="filter-badge"><?php echo $count_confirmed; ?></span>
             </a>
             <a href="notifications.php?filter=order_shipped" class="filter-tab <?php echo $filter == 'order_shipped' ? 'active' : ''; ?>">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -579,9 +603,7 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
                     <circle cx="18.5" cy="18.5" r="2.5"></circle>
                 </svg>
                 Dikirim
-                <?php if($count_shipped > 0): ?>
-                    <span class="filter-badge"><?php echo $count_shipped; ?></span>
-                <?php endif; ?>
+                <span class="filter-badge"><?php echo $count_shipped; ?></span>
             </a>
             <a href="notifications.php?filter=order_delivered" class="filter-tab <?php echo $filter == 'order_delivered' ? 'active' : ''; ?>">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -589,9 +611,7 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
                 Diterima
-                <?php if($count_delivered > 0): ?>
-                    <span class="filter-badge"><?php echo $count_delivered; ?></span>
-                <?php endif; ?>
+                <span class="filter-badge"><?php echo $count_delivered; ?></span>
             </a>
             <a href="notifications.php?filter=order_cancelled" class="filter-tab <?php echo $filter == 'order_cancelled' ? 'active' : ''; ?>">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -600,14 +620,16 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
                     <line x1="9" y1="9" x2="15" y2="15"></line>
                 </svg>
                 Dibatalkan
-                <?php if($count_cancelled > 0): ?>
-                    <span class="filter-badge"><?php echo $count_cancelled; ?></span>
-                <?php endif; ?>
+                <span class="filter-badge"><?php echo $count_cancelled; ?></span>
             </a>
         </div>
         
         <?php if(mysqli_num_rows($notifications) > 0): ?>
             <?php while($notif = mysqli_fetch_assoc($notifications)): ?>
+                <?php 
+                // Debug: Log notification type
+                error_log("Displaying notification - Type: " . $notif['type'] . ", Order ID: " . $notif['order_id']);
+                ?>
                 <div class="notification-item <?php echo $notif['is_read'] == 0 ? 'unread' : ''; ?>">
                     <div class="notification-flex-wrapper">
                         <div class="notification-icon <?php 
@@ -680,6 +702,7 @@ $count_cancelled = $count_cancelled_result ? mysqli_fetch_assoc($count_cancelled
     
     <script src="<?php echo $base_url; ?>assets/js/toast.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/modal.js"></script>
+    <script src="<?php echo $base_url; ?>assets/js/confirm-modal.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/lazy-load.js"></script>
     <script src="<?php echo $base_url; ?>assets/js/script.js"></script>
     <script>

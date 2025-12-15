@@ -31,11 +31,11 @@ if(!$product_id) {
 }
 
 if(isset($_POST['update_product']) || isset($_POST['remove_image_2']) || isset($_POST['remove_image_3']) || isset($_POST['remove_image_4']) || isset($_POST['remove_image_5']) || isset($_POST['remove_image_6']) || isset($_POST['remove_image_7']) || isset($_POST['remove_image_8']) || isset($_POST['remove_image_9']) || isset($_POST['remove_image_10'])) {
-    $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
-    $category = mysqli_real_escape_string($conn, $_POST['category']);
-    $price = mysqli_real_escape_string($conn, $_POST['price']);
-    $description = mysqli_real_escape_string($conn, $_POST['description']);
-    $condition_item = mysqli_real_escape_string($conn, $_POST['condition_item']);
+    $product_name = escape($_POST['product_name']);
+    $category = escape($_POST['category']);
+    $price = escape($_POST['price']);
+    $description = escape($_POST['description']);
+    $condition_item = escape($_POST['condition_item']);
     $is_active = 1; // Always active
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
     
@@ -165,6 +165,7 @@ if(!isset($product)) {
     <link rel="stylesheet" href="../assets/css/toast.css">
     <script src="../assets/js/toast.js"></script>
     <script src="../assets/js/modal.js"></script>
+    <script src="../assets/js/confirm-modal.js"></script>
     <style>
         .form-grid {
             display: grid;

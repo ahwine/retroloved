@@ -308,8 +308,10 @@ if(isset($_POST['place_order'])) {
             if($success_items == 0) {
                 query("DELETE FROM orders WHERE order_id = '$order_id'");
                 
-                // PERBAIKAN: Clear session jika direct checkout
+                // PERBAIKAN: Clear session dan hapus dari cart jika direct checkout
                 if($is_direct) {
+                    $direct_product_id = $_SESSION['direct_checkout_product'];
+                    query("DELETE FROM cart WHERE user_id = '$user_id' AND product_id = '$direct_product_id'");
                     unset($_SESSION['direct_checkout_product']);
                 }
                 
@@ -318,11 +320,16 @@ if(isset($_POST['place_order'])) {
                 exit();
             }
             
-            // PERBAIKAN: Hanya hapus cart jika bukan direct checkout
+            // PERBAIKAN: Hapus cart sesuai jenis checkout
             if(!$is_direct) {
-                // Hapus cart untuk normal checkout
+                // Normal checkout: Hapus SEMUA cart
                 query("DELETE FROM cart WHERE user_id = '$user_id'");
             } else {
+                // Direct checkout: Hapus HANYA produk yang di-checkout dari cart (jika ada)
+                // Ini mencegah produk yang sudah dibeli via "Beli Langsung" masih muncul di cart
+                $direct_product_id = $_SESSION['direct_checkout_product'];
+                query("DELETE FROM cart WHERE user_id = '$user_id' AND product_id = '$direct_product_id'");
+                
                 // Clear session untuk direct checkout
                 unset($_SESSION['direct_checkout_product']);
             }
@@ -330,10 +337,10 @@ if(isset($_POST['place_order'])) {
             // Create notification for customer
             create_notification(
                 $user_id, 
-                $order_id, 
                 'order', 
                 'Pesanan Berhasil Dibuat',
-                'Pesanan #' . $order_id . ' berhasil dibuat. Total: Rp ' . number_format($total, 0, ',', '.') . '. Silakan upload bukti pembayaran.'
+                'Pesanan #' . $order_id . ' berhasil dibuat. Total: Rp ' . number_format($total, 0, ',', '.') . '. Silakan upload bukti pembayaran.',
+                $order_id
             );
             
             // Redirect ke halaman orders dengan success message
@@ -923,13 +930,13 @@ if(isset($_POST['place_order'])) {
         let isValidating = false;
         
         function showConfirmationModal() {
-            // Check if terms are accepted first
+            // Cek apakah syarat dan ketentuan sudah dicentang
             const termsCheckbox = document.getElementById('termsCheckbox');
             if (termsCheckbox && !termsCheckbox.checked) {
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon centang persetujuan Syarat dan Ketentuan terlebih dahulu!');
                 } else {
-                    alert('Mohon centang persetujuan Syarat dan Ketentuan terlebih dahulu!');
+                    console.warn('Toast not available, showing console warning');
                 }
                 // Highlight the checkbox
                 const checkboxWrapper = document.querySelector('.terms-checkbox-wrapper');
@@ -987,14 +994,13 @@ if(isset($_POST['place_order'])) {
                 address = manualAddress.value.trim();
             }
             
-            // Validation with toast notifications
+            // Validasi dengan toast notification
             if (!customerName) {
-                console.log('Validation failed: Name is empty');
+                console.log('Validasi gagal: Nama kosong');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon isi nama lengkap Anda!');
                 } else {
-                    console.error('toastWarning not available, using alert');
-                    alert('Mohon isi nama lengkap Anda!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 const nameInput = document.querySelector('input[name="customer_name"]');
                 if (nameInput) {
@@ -1007,12 +1013,11 @@ if(isset($_POST['place_order'])) {
             }
             
             if (!customerEmail) {
-                console.log('Validation failed: Email is empty');
+                console.log('Validasi gagal: Email kosong');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon isi email Anda!');
                 } else {
-                    console.error('toastWarning not available, using alert');
-                    alert('Mohon isi email Anda!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 const emailInput = document.querySelector('input[name="customer_email"]');
                 if (emailInput) {
@@ -1024,14 +1029,14 @@ if(isset($_POST['place_order'])) {
                 return;
             }
             
-            // Validate email format
+            // Validasi format email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(customerEmail)) {
-                console.log('Validation failed: Email format invalid');
+                console.log('Validasi gagal: Format email tidak valid');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Format email tidak valid!');
                 } else {
-                    alert('Format email tidak valid!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 const emailInput = document.querySelector('input[name="customer_email"]');
                 if (emailInput) {
@@ -1044,11 +1049,11 @@ if(isset($_POST['place_order'])) {
             }
             
             if (!address) {
-                console.log('Validation failed: Address is empty');
+                console.log('Validasi gagal: Alamat kosong');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon pilih atau isi alamat pengiriman!');
                 } else {
-                    alert('Mohon pilih atau isi alamat pengiriman!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 isValidating = false;
@@ -1056,11 +1061,11 @@ if(isset($_POST['place_order'])) {
             }
             
             if (!phone) {
-                console.log('Validation failed: Phone is empty');
+                console.log('Validasi gagal: Nomor telepon kosong');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon isi nomor telepon!');
                 } else {
-                    alert('Mohon isi nomor telepon!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 const phoneInput = document.querySelector('input[name="phone"]:not([type="hidden"])');
                 if (phoneInput && phoneInput.offsetParent !== null) {
@@ -1072,14 +1077,14 @@ if(isset($_POST['place_order'])) {
                 return;
             }
             
-            // Check shipping service selection
+            // Cek pilihan layanan pengiriman
             const shippingService = document.querySelector('input[name="shipping_service_id"]:checked');
             if (!shippingService) {
-                console.log('Validation failed: Shipping service not selected');
+                console.log('Validasi gagal: Layanan pengiriman belum dipilih');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon pilih layanan pengiriman!');
                 } else {
-                    alert('Mohon pilih layanan pengiriman!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 const shippingSection = document.querySelector('.shipping-services-grid');
                 if (shippingSection) {
@@ -1101,11 +1106,11 @@ if(isset($_POST['place_order'])) {
             }
             
             if (!paymentMethod) {
-                console.log('Validation failed: Payment method not selected');
+                console.log('Validasi gagal: Metode pembayaran belum dipilih');
                 if (typeof toastWarning === 'function') {
                     toastWarning('Mohon pilih metode pembayaran!');
                 } else {
-                    alert('Mohon pilih metode pembayaran!');
+                    console.error('toastWarning tidak tersedia');
                 }
                 const paymentSection = document.querySelector('.payment-methods-simple');
                 if (paymentSection) {

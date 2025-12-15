@@ -8,6 +8,9 @@
 session_start();
 require_once '../config/database.php';
 
+// Set timezone ke Asia/Jakarta (WIB)
+date_default_timezone_set('Asia/Jakarta');
+
 // Set header JSON untuk response
 header('Content-Type: application/json');
 
@@ -263,12 +266,15 @@ elseif ($action === 'register') {
 // ===== PROSES VERIFIKASI EMAIL REGISTER (STEP 2) =====
 elseif ($action === 'verify_register_otp') {
     $email = escape($input['email']);
-    $code = escape($input['code']);
+    $code = trim($input['code']); // Trim only, no escape for numeric code
     
     error_log("========================================");
     error_log("🔍 VERIFY REGISTER OTP");
     error_log("Email: $email");
     error_log("Code: $code");
+    error_log("Code Length: " . strlen($code));
+    error_log("Code Type: " . gettype($code));
+    error_log("Code Hex: " . bin2hex($code));
     error_log("========================================");
     
     // Cek data yang ada di database untuk email ini
@@ -303,9 +309,25 @@ elseif ($action === 'verify_register_otp') {
     if (mysqli_num_rows($result) == 0) {
         error_log("❌ Verify Register OTP Failed - Invalid or expired code");
         error_log("========================================");
+        
+        // Debug: Get actual data from database
+        $debug_query = "SELECT verification_code, expires_at, 
+                        TIMESTAMPDIFF(MINUTE, NOW(), expires_at) as minutes_left 
+                        FROM email_verifications 
+                        WHERE email = '$email'";
+        $debug_result = query($debug_query);
+        $debug_data = mysqli_fetch_assoc($debug_result);
+        
         echo json_encode([
             'success' => false,
-            'message' => 'Kode verifikasi salah atau sudah kadaluarsa!'
+            'message' => 'Kode verifikasi salah atau sudah kadaluarsa!',
+            'debug' => [
+                'email_sent' => $email,
+                'code_sent' => $code,
+                'code_in_db' => $debug_data ? $debug_data['verification_code'] : 'NOT FOUND',
+                'minutes_left' => $debug_data ? $debug_data['minutes_left'] : 'N/A',
+                'match' => $debug_data ? ($debug_data['verification_code'] === $code ? 'YES' : 'NO') : 'N/A'
+            ]
         ]);
         exit();
     }
@@ -349,6 +371,13 @@ elseif ($action === 'verify_register_otp') {
         $_SESSION['full_name'] = $verification['full_name'];
         $_SESSION['email'] = $verification['email'];
         $_SESSION['role'] = 'customer';
+        
+        // PERBAIKAN: Hapus cookie recently_viewed untuk user baru (fresh start)
+        // User baru seharusnya tidak memiliki history browsing
+        if (isset($_COOKIE['recently_viewed'])) {
+            setcookie('recently_viewed', '', time() - 3600, '/', '', false, false);
+            unset($_COOKIE['recently_viewed']);
+        }
         
         error_log("Register Success - Username: '{$verification['username']}', Email: '$email', Auto-login: YES");
         echo json_encode([

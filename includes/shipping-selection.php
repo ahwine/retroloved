@@ -167,7 +167,7 @@ function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-// Validate shipping selection before checkout
+// Validasi pilihan pengiriman sebelum checkout
 document.addEventListener('DOMContentLoaded', function() {
     const checkoutForm = document.querySelector('form[name="checkout_form"]');
     if (checkoutForm) {
@@ -175,7 +175,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const shippingSelected = document.querySelector('input[name="shipping_service_id"]:checked');
             if (!shippingSelected) {
                 e.preventDefault();
-                alert('Mohon pilih layanan pengiriman terlebih dahulu!');
+                if (typeof toastWarning === 'function') {
+                    toastWarning('Mohon pilih layanan pengiriman terlebih dahulu!');
+                } else {
+                    console.error('toastWarning tidak tersedia');
+                }
                 
                 // Scroll to shipping section
                 const shippingSection = document.querySelector('.shipping-services-grid');

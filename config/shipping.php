@@ -154,24 +154,24 @@ function get_tracking_icon_svg($status_code) {
     return isset($icons[$status_code]) ? $icons[$status_code] : $icons['order_placed'];
 }
 
-// ===== FORMAT RELATIVE TIME =====
+// ===== FORMAT WAKTU RELATIF =====
 function format_relative_time($datetime) {
     $time = strtotime($datetime);
     $diff = time() - $time;
     
     if ($diff < 60) {
-        return 'Just now';
+        return 'Baru saja';
     } elseif ($diff < 3600) {
         $mins = floor($diff / 60);
-        return $mins . ' minute' . ($mins > 1 ? 's' : '') . ' ago';
+        return $mins . ' menit yang lalu';
     } elseif ($diff < 86400) {
         $hours = floor($diff / 3600);
-        return $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
+        return $hours . ' jam yang lalu';
     } elseif ($diff < 172800) {
-        return 'Yesterday at ' . date('H:i', $time);
+        return 'Kemarin pukul ' . date('H:i', $time);
     } elseif ($diff < 604800) {
         $days = floor($diff / 86400);
-        return $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
+        return $days . ' hari yang lalu';
     } else {
         return date('d M Y, H:i', $time);
     }

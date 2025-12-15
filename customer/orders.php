@@ -308,7 +308,7 @@ $orders = query("SELECT *,
                 </button>
             </div>
             
-            <div class="orders-list">
+            <div class="orders-list" id="ordersList">
         
         <?php if(mysqli_num_rows($orders) > 0): ?>
             
@@ -607,14 +607,23 @@ $orders = query("SELECT *,
                 }
             });
             
-            // Show empty state if no orders
+            // Show/hide empty state based on visible count
             const existingEmpty = document.querySelector('.empty-orders-dynamic');
+            const staticEmpty = document.querySelector('.empty-orders:not(.empty-orders-dynamic)');
+            
+            // Remove existing dynamic empty state
             if (existingEmpty) {
                 existingEmpty.remove();
             }
             
+            // Hide static empty state if it exists (only show when NO orders at all)
+            if (staticEmpty) {
+                staticEmpty.style.display = 'none';
+            }
+            
+            // Show dynamic empty state only if no visible orders
             if (visibleCount === 0) {
-                const ordersList = document.querySelector('.orders-list');
+                const ordersList = document.getElementById('ordersList');
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'empty-orders empty-orders-dynamic';
                 emptyDiv.innerHTML = `
@@ -831,11 +840,13 @@ $orders = query("SELECT *,
 
         // Initialize filter on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Don't auto-filter on load, let PHP handle initial display
-            // Just update button text
+            // Initialize with 'recently' filter to show only non-archived orders
+            filterOrders('recently');
+            
+            // Update button text
             const bulkArchiveText = document.getElementById('bulkArchiveText');
             if (bulkArchiveText) {
-                bulkArchiveText.textContent = 'Arsipkan yang Dipilih';
+                bulkArchiveText.textContent = 'Arsipkan';
             }
             
             // Initialize countdown timers

@@ -226,84 +226,12 @@ function showPasswordStrength(passwordField) {
 /**
  * Show password requirements checklist
  * @param {HTMLElement} passwordField - Password input field
+ * NOTE: Disabled - Requirements are now shown in profile.php directly
  */
 function showPasswordRequirements(passwordField) {
-    if (!passwordField) return;
-    
-    let requirements = passwordField.parentElement.querySelector('.password-requirements');
-    if (!requirements) {
-        requirements = document.createElement('div');
-        requirements.className = 'password-requirements';
-        requirements.innerHTML = `
-            <ul>
-                <li data-req="length">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg>
-                    Minimal 8 karakter
-                </li>
-                <li data-req="uppercase">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg>
-                    Minimal 1 huruf besar (A-Z)
-                </li>
-                <li data-req="lowercase">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg>
-                    Minimal 1 huruf kecil (a-z)
-                </li>
-                <li data-req="number">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg>
-                    Minimal 1 angka (0-9)
-                </li>
-            </ul>
-        `;
-        passwordField.parentElement.appendChild(requirements);
-    }
-    
-    const password = passwordField.value;
-    
-    // Check each requirement
-    const lengthReq = requirements.querySelector('[data-req="length"]');
-    const uppercaseReq = requirements.querySelector('[data-req="uppercase"]');
-    const lowercaseReq = requirements.querySelector('[data-req="lowercase"]');
-    const numberReq = requirements.querySelector('[data-req="number"]');
-    
-    if (password.length >= 8) {
-        lengthReq.classList.add('valid');
-        lengthReq.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
-    } else {
-        lengthReq.classList.remove('valid');
-        lengthReq.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"></circle>';
-    }
-    
-    if (/[A-Z]/.test(password)) {
-        uppercaseReq.classList.add('valid');
-        uppercaseReq.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
-    } else {
-        uppercaseReq.classList.remove('valid');
-        uppercaseReq.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"></circle>';
-    }
-    
-    if (/[a-z]/.test(password)) {
-        lowercaseReq.classList.add('valid');
-        lowercaseReq.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
-    } else {
-        lowercaseReq.classList.remove('valid');
-        lowercaseReq.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"></circle>';
-    }
-    
-    if (/\d/.test(password)) {
-        numberReq.classList.add('valid');
-        numberReq.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
-    } else {
-        numberReq.classList.remove('valid');
-        numberReq.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"></circle>';
-    }
+    // Function disabled to prevent duplicate requirements
+    // Requirements are now handled directly in profile.php
+    return;
 }
 
 /**

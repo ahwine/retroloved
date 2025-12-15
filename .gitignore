@@ -1,53 +1,87 @@
-# RetroLoved - Git Ignore File
+# ========================================
+# RetroLoved .gitignore
+# ========================================
 
-# Sensitive Configuration Files
-config/database.php
-config/email.php
+# ===== Vendor & Dependencies =====
+vendor/
+node_modules/
+composer.phar
 
-# User Uploaded Files
+# ===== Config Files (Sensitive) =====
+# Uncomment jika tidak ingin commit config
+# config/database.php
+# config/email.php
+
+# ===== User Uploaded Files =====
 assets/images/products/*
 !assets/images/products/.gitkeep
 assets/images/profiles/*
 !assets/images/profiles/.gitkeep
 
-# Logs
-*.log
-php_error.log
-error.log
+# ===== Backup Files =====
+backup/*.sql
+!backup/.gitkeep
 
-# Temporary Files
+# ===== Logs =====
+*.log
+logs/
+error_log
+php_error.log
+
+# ===== Temporary Files =====
 *.tmp
 *.temp
+*.cache
 *.swp
 *.swo
 *~
 
-# OS Files
-Thumbs.db
-Desktop.ini
+# ===== OS Generated Files =====
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
 
-# IDE Files
+# ===== IDE & Editor Files =====
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 
-# Composer
-vendor/
+# ===== PHP Storm =====
+.phpstorm.meta.php
+_ide_helper.php
 
-# Node Modules
-node_modules/
+# ===== Composer =====
+composer.lock
 
-# Backup Files
-*.bak
-*.backup
-*.old
+# ===== Environment Files =====
+.env
+.env.local
+.env.*.local
 
-# Temporary Folders
-temp_retroloved/
+# ===== Test Files =====
+test-*.php
+debug-*.php
+*-test.php
+*-debug.php
 
-# Documentation (optional - uncomment if you don't want to push)
-# LAPORAN_*.md
-# PANDUAN_*.md
-# INSTRUKSI_*.md
+# ===== Documentation (Optional) =====
+# Uncomment jika tidak ingin commit dokumentasi development
+# ANALISIS-*.md
+# PERBAIKAN-*.md
+# FIX-*.md
+# CARA-*.md
+# CLEANUP-*.md
+
+# ===== Cleanup Scripts (Optional) =====
+# Uncomment jika tidak ingin commit cleanup scripts
+# cleanup-files.bat
+# reset-database.bat
+# reset-database.sql
+# reset-database-safe.sql

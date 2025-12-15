@@ -190,7 +190,11 @@ let currentStepOrder = <?php echo $current_step; ?>;
 
 function selectStatus(statusCode, stepOrder, isCompleted) {
     if (isCompleted) {
-        alert('Status ini sudah dilewati. Tidak bisa kembali ke status sebelumnya.');
+        if (typeof toastWarning === 'function') {
+            toastWarning('Status ini sudah dilewati. Tidak bisa kembali ke status sebelumnya.');
+        } else {
+            console.warn('Status sudah dilewati');
+        }
         return;
     }
     
@@ -216,14 +220,18 @@ function selectStatus(statusCode, stepOrder, isCompleted) {
     }
 }
 
-// Preview tracking update
+// Preview update tracking
 function previewTracking() {
     const selectedStatus = document.querySelector('input[name="status_detail"]:checked');
     const location = document.getElementById('location').value;
     const notes = document.getElementById('notes').value;
     
     if (!selectedStatus) {
-        alert('Mohon pilih status tracking terlebih dahulu!');
+        if (typeof toastWarning === 'function') {
+            toastWarning('Mohon pilih status tracking terlebih dahulu!');
+        } else {
+            console.warn('Status tracking belum dipilih');
+        }
         return;
     }
     
@@ -234,17 +242,25 @@ function previewTracking() {
     if (location) preview += '• Lokasi: ' + location + '\n';
     if (notes) preview += '• Catatan: ' + notes + '\n';
     
-    alert(preview);
+    if (typeof toastInfo === 'function') {
+        toastInfo(preview.replace(/\n/g, '<br>'));
+    } else {
+        console.log(preview);
+    }
 }
 
-// Form validation
+// Validasi form
 document.getElementById('trackingUpdateForm').addEventListener('submit', function(e) {
     const selectedStatus = document.querySelector('input[name="status_detail"]:checked');
     if (!selectedStatus) {
         e.preventDefault();
-        alert('Mohon pilih status tracking!');
+        if (typeof toastWarning === 'function') {
+            toastWarning('Mohon pilih status tracking!');
+        } else {
+            console.error('Status tracking belum dipilih');
+        }
         
-        // Scroll to status selection
+        // Scroll ke bagian pilihan status
         document.querySelector('.status-select-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 });

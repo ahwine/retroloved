@@ -1,13 +1,12 @@
-﻿<?php
+<?php
 /**
- * Email Configuration - EXAMPLE FILE
- * Copy this file to email.php and update with your SMTP credentials
+ * Email Configuration
  */
 
 // SMTP Configuration
 define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USERNAME', 'your-email@gmail.com');
-define('SMTP_PASSWORD', 'your-app-password');
+define('SMTP_USERNAME', 'retroloved.ofc@gmail.com');
+define('SMTP_PASSWORD', 'uevs nrbg ydlh dfiw');
 define('SMTP_PORT', 587);
 define('SMTP_SECURE', 'tls');
 
@@ -15,12 +14,12 @@ define('SMTP_SECURE', 'tls');
 define('FROM_EMAIL', 'noreply@retroloved.com');
 define('FROM_NAME', 'RetroLoved');
 define('REPLY_TO_EMAIL', 'support@retroloved.com');
+define('SUPPORT_EMAIL', 'retroloved.ofc@gmail.com'); // Email admin untuk menerima pesan support
 
-// Load PHPMailer
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// Load PHPMailer (only if vendor exists)
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
 
 /**
  * Email Helper Class
@@ -30,7 +29,13 @@ class EmailHelper {
      * Send email using PHPMailer
      */
     public static function send($to, $subject, $body, $altBody = '') {
-        $mail = new PHPMailer(true);
+        // Check if PHPMailer is available
+        if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+            error_log("PHPMailer not installed. Run: composer require phpmailer/phpmailer");
+            return false;
+        }
+        
+        $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
         
         try {
             // Server settings
@@ -55,8 +60,11 @@ class EmailHelper {
             
             $mail->send();
             return true;
-        } catch (Exception $e) {
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
             error_log("Email Error: {$mail->ErrorInfo}");
+            return false;
+        } catch (\Exception $e) {
+            error_log("Email Error: " . $e->getMessage());
             return false;
         }
     }

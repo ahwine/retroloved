@@ -30,6 +30,9 @@ function showRegisterModal() {
     
     // Setup close handlers
     setupCloseHandlers(overlay, modal);
+    
+    // Setup password validation
+    setupPasswordValidation();
 }
 
 // Create Overlay
@@ -172,7 +175,15 @@ function createRegisterModal() {
             
             <div>
                 <label style="display: block; margin-bottom: 8px; color: #374151; font-weight: 600; font-size: 14px;">Password <span style="color: #DC2626;">*</span></label>
-                <input type="text" id="registerPassword" name="password" required minlength="8" style="width: 100%; padding: 12px 16px; border: 1.5px solid #E5E7EB; border-radius: 10px; font-size: 15px; transition: all 0.2s; font-family: inherit;" placeholder="Minimal 8 karakter">
+                <div style="position: relative;">
+                    <input type="password" id="registerPassword" name="password" required minlength="8" style="width: 100%; padding: 12px 45px 12px 16px; border: 1.5px solid #E5E7EB; border-radius: 10px; font-size: 15px; transition: all 0.2s; font-family: inherit;" placeholder="Minimal 8 karakter">
+                    <button type="button" onclick="toggleRegisterPasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 5px; color: #6B7280;">
+                        <svg id="registerPasswordEyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
                 <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
                     <div style="display: flex; align-items: center; gap: 8px; color: #9CA3AF; font-size: 13px;">
                         <span id="registerLengthCheck" style="font-weight: bold;">
@@ -1309,7 +1320,7 @@ function handleEmailVerification(event) {
     console.log('📧 Email Verification Form submitted');
     
     const formData = new FormData(event.target);
-    const code = formData.get('code');
+    const code = formData.get('code').trim(); // Trim whitespace
     const emailInput = document.getElementById('verificationEmail');
     
     // PERBAIKAN: Cek berbagai sumber email
@@ -1395,6 +1406,24 @@ function handleEmailVerification(event) {
             }, 1500);
         } else {
             console.error('❌ Email Verification Failed:', result.message);
+            
+            // Show debug info if available
+            if (result.debug) {
+                console.error('🐛 Debug Info:', result.debug);
+                console.error('  - Email Sent:', result.debug.email_sent);
+                console.error('  - Code Sent:', result.debug.code_sent);
+                console.error('  - Code in DB:', result.debug.code_in_db);
+                console.error('  - Minutes Left:', result.debug.minutes_left);
+                console.error('  - Match:', result.debug.match);
+                
+                alert('DEBUG INFO:\n\n' +
+                      'Kode Anda: ' + result.debug.code_sent + '\n' +
+                      'Kode di DB: ' + result.debug.code_in_db + '\n' +
+                      'Match: ' + result.debug.match + '\n' +
+                      'Sisa Waktu: ' + result.debug.minutes_left + ' menit\n\n' +
+                      'Buka Console (F12) untuk detail lengkap');
+            }
+            
             toastError(result.message);
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
@@ -2036,25 +2065,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     lengthCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                     lengthCheck.style.background = '#10B981';
                     lengthCheck.style.color = 'white';
-                    lengthCheck.parentElement.querySelector('span:last-child').style.color = '#10B981';
+                    lengthCheck.parentElement.style.color = '#10B981';
                 } else {
                     lengthCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-                    lengthCheck.style.background = password.length > 0 ? '#EF4444' : '#E5E7EB';
-                    lengthCheck.style.color = password.length > 0 ? 'white' : '#9CA3AF';
-                    lengthCheck.parentElement.querySelector('span:last-child').style.color = password.length > 0 ? '#EF4444' : '#6B7280';
+                    lengthCheck.style.background = '#E5E7EB';
+                    lengthCheck.style.color = '#9CA3AF';
+                    lengthCheck.parentElement.style.color = '#6B7280';
                 }
                 
                 // Check uppercase, lowercase, and number
-                if (/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                
+                if (hasUpperCase && hasLowerCase && hasNumber) {
                     caseCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                     caseCheck.style.background = '#10B981';
                     caseCheck.style.color = 'white';
-                    caseCheck.parentElement.querySelector('span:last-child').style.color = '#10B981';
+                    caseCheck.parentElement.style.color = '#10B981';
                 } else {
                     caseCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-                    caseCheck.style.background = password.length > 0 ? '#EF4444' : '#E5E7EB';
-                    caseCheck.style.color = password.length > 0 ? 'white' : '#9CA3AF';
-                    caseCheck.parentElement.querySelector('span:last-child').style.color = password.length > 0 ? '#EF4444' : '#6B7280';
+                    caseCheck.style.background = '#E5E7EB';
+                    caseCheck.style.color = '#9CA3AF';
+                    caseCheck.parentElement.style.color = '#6B7280';
                 }
             }
         }
@@ -2082,3 +2115,73 @@ window.resendVerificationCode = resendVerificationCode;
 
 // Force reload check - v1.3
 console.log('🔐 Auth Modal JS Loaded - Version 1.3 - 2 Panel Forgot Password with SVG Icons');
+
+
+// Setup Password Validation for Register
+function setupPasswordValidation() {
+    const passwordField = document.getElementById('registerPassword');
+    
+    if (!passwordField) return;
+    
+    passwordField.addEventListener('input', function() {
+        const password = this.value;
+        const lengthCheck = document.getElementById('registerLengthCheck');
+        const caseCheck = document.getElementById('registerCaseCheck');
+        
+        if (!lengthCheck || !caseCheck) return;
+        
+        // Check length (minimal 8 karakter)
+        if (password.length >= 8) {
+            lengthCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            lengthCheck.style.color = '#10B981';
+            lengthCheck.parentElement.style.color = '#10B981';
+        } else {
+            lengthCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display: inline-block; vertical-align: middle;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+            lengthCheck.style.color = '#9CA3AF';
+            lengthCheck.parentElement.style.color = '#9CA3AF';
+        }
+        
+        // Check uppercase, lowercase, and number
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        
+        if (hasUpperCase && hasLowerCase && hasNumber) {
+            caseCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            caseCheck.style.color = '#10B981';
+            caseCheck.parentElement.style.color = '#10B981';
+        } else {
+            caseCheck.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display: inline-block; vertical-align: middle;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+            caseCheck.style.color = '#9CA3AF';
+            caseCheck.parentElement.style.color = '#9CA3AF';
+        }
+    });
+}
+
+
+// Toggle Register Password Visibility
+function toggleRegisterPasswordVisibility() {
+    const passwordField = document.getElementById('registerPassword');
+    const eyeIcon = document.getElementById('registerPasswordEyeIcon');
+    
+    if (!passwordField || !eyeIcon) return;
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        // Change to eye-off icon
+        eyeIcon.innerHTML = `
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+        `;
+    } else {
+        passwordField.type = 'password';
+        // Change to eye icon
+        eyeIcon.innerHTML = `
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        `;
+    }
+}
+
+// Make function globally accessible
+window.toggleRegisterPasswordVisibility = toggleRegisterPasswordVisibility;

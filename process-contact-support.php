@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once 'config/email.php';
 
 // Set timezone ke Asia/Jakarta (WIB)
 date_default_timezone_set('Asia/Jakarta');
@@ -11,6 +10,20 @@ header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 0); // Don't display errors in JSON response
 ini_set('log_errors', 1);
+
+// Check if email config exists
+if (!file_exists(__DIR__ . '/config/email.php')) {
+    echo json_encode(['success' => false, 'message' => 'Konfigurasi email tidak ditemukan']);
+    exit;
+}
+
+require_once 'config/email.php';
+
+// Check if SUPPORT_EMAIL is defined
+if (!defined('SUPPORT_EMAIL')) {
+    echo json_encode(['success' => false, 'message' => 'Email support tidak dikonfigurasi']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
@@ -97,9 +110,15 @@ $email_body = EmailHelper::getTemplate('Pesan Contact Support - RetroLoved', $em
 
 // Kirim email ke retroloved.ofc@gmail.com
 try {
+    error_log("Attempting to send contact support email to: " . SUPPORT_EMAIL);
+    error_log("Support ID: $support_id");
+    error_log("From: $name <$email>");
+    error_log("Subject: $subject");
+    
     $mail_sent = EmailHelper::send(SUPPORT_EMAIL, $email_subject, $email_body, $email);
+    
     if ($mail_sent) {
-        error_log("Contact Support Email sent successfully to " . SUPPORT_EMAIL . " for support #$support_id");
+        error_log("✅ Contact Support Email sent successfully to " . SUPPORT_EMAIL . " for support #$support_id");
         
         // Success response - email sent
         echo json_encode([
@@ -108,11 +127,13 @@ try {
             'support_id' => $support_id
         ]);
     } else {
-        throw new Exception('Email failed to send');
+        error_log("❌ EmailHelper::send returned false");
+        throw new Exception('Email failed to send - EmailHelper returned false');
     }
 } catch (Exception $e) {
     // Mail failed
-    error_log("Contact Support Email failed: " . $e->getMessage());
+    error_log("❌ Contact Support Email failed: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     
     echo json_encode([
         'success' => false, 

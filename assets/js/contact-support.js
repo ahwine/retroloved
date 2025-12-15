@@ -118,10 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Contact Support Response:', result);
                 
                 if (result.success) {
-                    // Show success toast
-                    if (typeof showToast === 'function') {
+                    // Show success toast - try multiple methods
+                    if (typeof toastSuccess === 'function') {
+                        toastSuccess(result.message);
+                    } else if (typeof showToast === 'function') {
                         showToast(result.message, 'success');
-                    } else if (typeof window.Toast !== 'undefined') {
+                    } else if (typeof window.Toast !== 'undefined' && typeof window.Toast.success === 'function') {
                         window.Toast.success(result.message);
                     } else {
                         alert(result.message); // Fallback
@@ -132,10 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         closeContactSupportModal();
                     }, 2000);
                 } else {
-                    // Show error toast
-                    if (typeof showToast === 'function') {
+                    // Show error toast - try multiple methods
+                    if (typeof toastError === 'function') {
+                        toastError(result.message);
+                    } else if (typeof showToast === 'function') {
                         showToast(result.message, 'error');
-                    } else if (typeof window.Toast !== 'undefined') {
+                    } else if (typeof window.Toast !== 'undefined' && typeof window.Toast.error === 'function') {
                         window.Toast.error(result.message);
                     } else {
                         alert(result.message); // Fallback
@@ -143,9 +147,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                if (typeof showToast === 'function') {
+                if (typeof toastError === 'function') {
+                    toastError('Terjadi kesalahan. Silakan coba lagi.');
+                } else if (typeof showToast === 'function') {
                     showToast('Terjadi kesalahan. Silakan coba lagi.', 'error');
-                } else if (typeof window.Toast !== 'undefined') {
+                } else if (typeof window.Toast !== 'undefined' && typeof window.Toast.error === 'function') {
                     window.Toast.error('Terjadi kesalahan. Silakan coba lagi.');
                 } else {
                     alert('Terjadi kesalahan. Silakan coba lagi.'); // Fallback
