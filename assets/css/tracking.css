@@ -1,0 +1,683 @@
+﻿/* ===== ORDER TRACKING STYLES ===== */
+/* Consistent with RetroLoved Design System */
+
+/* Shipping Selection Card */
+.shipping-services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .shipping-services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.shipping-service-card {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 140px;
+}
+
+.shipping-service-card:hover {
+    border-color: var(--primary);
+    background: var(--bg-gray);
+}
+
+.shipping-service-card.selected {
+    border-color: var(--primary);
+    background: #FEF3C7;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+}
+
+.shipping-service-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.shipping-radio {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.shipping-service-card.selected .shipping-radio {
+    border-color: var(--primary);
+    background: transparent;
+}
+
+.shipping-service-card.selected .shipping-radio::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.courier-info {
+    flex: 1;
+}
+
+.courier-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.service-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.service-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.service-duration {
+    font-size: 13px;
+    color: var(--text-gray);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.service-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.badge-fast {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.badge-cheap {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.badge-free {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+.service-description {
+    font-size: 13px;
+    color: var(--text-gray);
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+/* Price Breakdown */
+.price-breakdown {
+    background: var(--bg-gray);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.price-label {
+    font-size: 14px;
+    color: var(--text-gray);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.price-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.price-total {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid var(--text-dark);
+}
+
+.price-total .price-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.price-total .price-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* Shipping Info Card (Admin/Customer Order Detail) */
+.shipping-info-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.shipping-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+.courier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--text-dark);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.courier-badge svg {
+    stroke: var(--primary);
+}
+
+.tracking-number-box {
+    background: var(--bg-gray);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+}
+
+.tracking-number-label {
+    font-size: 12px;
+    color: var(--text-gray);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.tracking-number-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: 1px;
+}
+
+.current-location-box {
+    background: var(--primary-light);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+}
+
+.location-status {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.location-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.location-time {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-top: 4px;
+}
+
+/* Tracking Timeline */
+.tracking-timeline {
+    margin-top: 24px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.progress-percentage {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.6s ease;
+}
+
+.timeline-list {
+    position: relative;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 48px;
+    padding-bottom: 32px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 40px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+}
+
+.timeline-item:last-child::before {
+    display: none;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    border: 2px solid var(--border);
+    background: white;
+}
+
+.timeline-marker svg {
+    width: 18px;
+    height: 18px;
+}
+
+.timeline-item.completed .timeline-marker {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+.timeline-item.completed .timeline-marker svg {
+    stroke: white;
+}
+
+.timeline-item.active .timeline-marker {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.timeline-item.active .timeline-marker svg {
+    stroke: white;
+}
+
+.timeline-item.pending .timeline-marker {
+    background: white;
+    border-color: var(--border);
+    color: var(--text-light);
+}
+
+.timeline-item.pending .timeline-marker svg {
+    stroke: var(--text-light);
+}
+
+/* Status-specific marker colors */
+.marker-pending {
+    background: #FEF3C7;
+    border-color: #F59E0B;
+}
+
+.marker-processing {
+    background: #DBEAFE;
+    border-color: #3B82F6;
+}
+
+.marker-shipped {
+    background: #E0E7FF;
+    border-color: #6366F1;
+}
+
+.marker-delivered {
+    background: #D1FAE5;
+    border-color: #10B981;
+}
+
+.marker-completed {
+    background: #10B981;
+    border-color: #059669;
+}
+
+.marker-cancelled {
+    background: #FEE2E2;
+    border-color: #EF4444;
+}
+
+.timeline-content {
+    background: white;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.timeline-status {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.timeline-item.active .timeline-status {
+    color: var(--primary);
+}
+
+.timeline-date {
+    font-size: 13px;
+    color: var(--text-gray);
+    white-space: nowrap;
+}
+
+.timeline-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-gray);
+    margin-top: 4px;
+}
+
+.timeline-location svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-gray);
+}
+
+.timeline-description {
+    font-size: 13px;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-top: 4px;
+}
+
+.timeline-detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6B7280;
+    margin-top: 6px;
+}
+
+.timeline-detail svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+}
+
+.timeline-notes {
+    background: var(--bg-gray);
+    border-left: 3px solid var(--primary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+.timeline-courier {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+.timeline-courier svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-dark);
+}
+
+.timeline-admin {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 6px;
+}
+
+.estimated-delivery {
+    background: var(--bg-gray);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.estimated-label {
+    font-size: 12px;
+    color: var(--text-gray);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.estimated-date {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* Update Tracking Form (Admin) */
+.tracking-form-group {
+    margin-bottom: 20px;
+}
+
+.tracking-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.status-select-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.status-option {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    position: relative;
+}
+
+.status-option:hover {
+    border-color: var(--primary);
+    background: var(--bg-gray);
+}
+
+.status-option.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.status-option.completed {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.status-option-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.status-step {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--border);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-option.completed .status-step {
+    background: var(--success);
+}
+
+.status-option.selected .status-step {
+    background: var(--primary);
+}
+
+.status-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.status-badge-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: auto;
+}
+
+.badge-completed {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.badge-next {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+.badge-pending {
+    background: var(--bg-gray);
+    color: var(--text-gray);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .shipping-service-card {
+        padding: 12px;
+    }
+    
+    .service-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .timeline-item {
+        padding-left: 40px;
+    }
+    
+    .timeline-marker {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .timeline-header {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .status-select-grid {
+        grid-template-columns: 1fr;
+    }
+}

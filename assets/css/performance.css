@@ -1,0 +1,605 @@
+/* =====================================================
+   PERFORMANCE OPTIMIZATION CSS
+   Replaces inline styles with reusable classes
+   ===================================================== */
+
+/* ===== CART PAGE STYLES ===== */
+.cart-image-wrapper {
+    position: relative;
+}
+
+.cart-product-link {
+    color: #1f2937;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.cart-shipping-info {
+    color: #DC2626;
+}
+
+.cart-icon-inline {
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+.cart-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cart-checkout-icon {
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.cart-empty-icon {
+    margin-bottom: 24px;
+}
+
+.cart-empty-title {
+    color: #6B7280;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.cart-empty-text {
+    color: #9CA3AF;
+    margin-bottom: 32px;
+}
+
+/* ===== NOTIFICATIONS PAGE STYLES ===== */
+.notifications-unread-count {
+    color: #6B7280;
+}
+
+.notification-flex-wrapper {
+    display: flex;
+}
+
+/* ===== UPLOAD PAYMENT PAGE STYLES ===== */
+.upload-guide-icon {
+    min-width: 20px;
+}
+
+.upload-file-input-hidden {
+    display: none;
+}
+
+.upload-selected-file {
+    display: none;
+}
+
+.upload-content-clickable {
+    cursor: pointer;
+}
+
+/* ===== INDEX PAGE STYLES ===== */
+.filter-sort-hidden {
+    display: none;
+}
+
+.products-grid-empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 50px;
+    color: #999;
+}
+
+/* ===== ORDERS PAGE STYLES ===== */
+.order-actions-flex {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.order-upload-icon {
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.order-cancel-btn {
+    background: #DC2626;
+    color: white;
+}
+
+.order-cancel-icon {
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.order-status-pending {
+    color: #F59E0B;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-status-cancelled {
+    color: #DC2626;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-status-completed {
+    color: #10B981;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.payment-proof-input-hidden {
+    display: none;
+}
+
+/* ===== CHECKOUT PAGE STYLES ===== */
+.checkout-error-box {
+    background: #FEE2E2;
+    border: 2px solid #EF4444;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.checkout-error-text {
+    color: #DC2626;
+    font-weight: 500;
+}
+
+.checkout-address-label {
+    margin-top: 16px;
+}
+
+.checkout-confirmation-icon {
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+.checkout-spinner-animation {
+    animation: spin 1s linear infinite;
+}
+
+.add-address-modal-hidden {
+    display: none;
+}
+
+.add-address-loading-hidden {
+    display: none;
+}
+
+/* ===== PROFILE PAGE STYLES ===== */
+.profile-icon-inline {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+
+.profile-tab-title {
+    font-weight: 600;
+}
+
+.profile-tab-subtitle {
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+.profile-picture-label {
+    cursor: pointer;
+}
+
+.profile-picture-input-hidden {
+    display: none;
+}
+
+.profile-username-help {
+    color: #9CA3AF;
+}
+
+.profile-cancel-btn-hidden {
+    display: none;
+}
+
+.profile-password-section {
+    border-top: 2px solid #E5E7EB;
+    padding-top: 24px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.profile-password-title {
+    font-size: 16px;
+    color: #1F2937;
+    margin-bottom: 16px;
+}
+
+.profile-password-help {
+    color: #6B7280;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.profile-eye-icon-hidden {
+    display: none;
+}
+
+.profile-password-requirements {
+    margin-top: 12px;
+}
+
+.profile-add-address-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #1F2937;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+}
+
+.profile-add-address-btn:hover {
+    background: #374151;
+    transform: translateY(-2px);
+}
+
+.profile-address-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.profile-address-card-default {
+    border: 2px solid #D97706;
+}
+
+.profile-address-card-normal {
+    border: 2px solid #E5E7EB;
+}
+
+.profile-address-default-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #FEF3C7;
+    color: #D97706;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.profile-address-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 8px;
+}
+
+.profile-address-phone {
+    color: #6B7280;
+    margin-bottom: 4px;
+}
+
+.profile-address-text {
+    color: #1F2937;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.profile-address-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.profile-address-form-inline {
+    display: inline;
+}
+
+.profile-set-default-btn {
+    padding: 8px 16px;
+    background: white;
+    color: #D97706;
+    border: 1.5px solid #D97706;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.profile-set-default-btn:hover {
+    background: #D97706;
+    color: white;
+}
+
+.profile-delete-address-btn {
+    padding: 8px 16px;
+    background: white;
+    color: #DC2626;
+    border: 1.5px solid #DC2626;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.profile-delete-address-btn:hover {
+    background: #DC2626;
+    color: white;
+}
+
+.profile-no-address {
+    text-align: center;
+    padding: 60px 20px;
+    background: #F9FAFB;
+    border-radius: 12px;
+    border: 2px dashed #E5E7EB;
+}
+
+.profile-no-address-icon {
+    margin: 0 auto 16px;
+}
+
+.profile-no-address-text {
+    color: #6B7280;
+    font-size: 16px;
+}
+
+.profile-address-modal-hidden {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    overflow-y: auto;
+}
+
+.profile-address-modal-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.profile-address-modal-content {
+    background: white;
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.profile-address-modal-header {
+    padding: 24px;
+    border-bottom: 1px solid #E5E7EB;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+.profile-address-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F2937;
+}
+
+.profile-address-modal-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6B7280;
+}
+
+.profile-address-modal-close:hover {
+    color: #1F2937;
+}
+
+.profile-address-modal-form {
+    padding: 24px;
+}
+
+.profile-address-checkbox-wrapper {
+    margin-bottom: 20px;
+}
+
+.profile-address-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.profile-address-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.profile-address-checkbox-text {
+    color: #374151;
+    font-weight: 500;
+}
+
+.profile-address-submit-btn {
+    width: 100%;
+    float: none;
+}
+
+.profile-delete-modal-hidden {
+    display: none;
+}
+
+.profile-delete-modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.profile-delete-modal-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: #FEF3C7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.profile-delete-modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1F2937;
+    margin: 0 0 12px 0;
+}
+
+.profile-delete-modal-text {
+    color: #6B7280;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+}
+
+.profile-delete-modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.profile-delete-cancel-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: white;
+    color: #6B7280;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.profile-delete-cancel-btn:hover {
+    background: #F3F4F6;
+    border-color: #D1D5DB;
+}
+
+.profile-delete-confirm-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: #DC2626;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.profile-delete-confirm-btn:hover {
+    background: #B91C1C;
+    transform: translateY(-2px);
+}
+
+/* ===== PRODUCT DETAIL PAGE STYLES ===== */
+.product-detail-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== GENERAL UTILITY CLASSES ===== */
+.inline-svg {
+    vertical-align: middle;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text-muted {
+    color: #6B7280;
+}
+
+.text-danger {
+    color: #DC2626;
+}
+
+.text-success {
+    color: #10B981;
+}
+
+.text-warning {
+    color: #F59E0B;
+}
+
+.bg-danger {
+    background: #DC2626;
+}
+
+.bg-success {
+    background: #10B981;
+}
+
+.bg-warning {
+    background: #F59E0B;
+}
+
+/* ===== IMAGE OPTIMIZATION ===== */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+img[loading="lazy"] {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+}
+
+/* ===== RESPONSIVE IMAGES ===== */
+@media (max-width: 768px) {
+    img {
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+/* ===== MINIFIED CSS READY ===== */
+/* This CSS is optimized and ready for minification */
+/* Use a CSS minifier tool to reduce file size further */

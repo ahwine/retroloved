@@ -1,0 +1,100 @@
+Major update: Feature improvements, bug fixes, and cleanup
+
+## New Features
+- Add sequential one-by-one image upload for products (admin/product-add.php)
+  * Grid layout 4x2 with 8 image slots
+  * Sequential activation: next slot activates after previous upload
+  * Individual delete button for each image
+  * Visual feedback with preview and upload status
+
+- Add close button (X icon) in product-add page header
+  * Positioned at top-right corner of card
+  * Hover effect changes to red
+
+- Conditional submit button visibility in product-add
+  * Hidden in tabs: Info Dasar, Gambar & Galeri, Deskripsi & Detail
+  * Only shown in final tab: Status & Pengaturan
+
+## Bug Fixes
+- Fix delete address functionality in customer profile
+  * Added missing hidden input name="delete_address"
+  * Address deletion now works properly
+
+- Fix icon alignment issues across multiple pages
+  * checkout.php: Fixed + icon alignment in "Tambah Alamat" buttons
+  * order-tracking.php: Fixed truck icon alignment with "Lacak Pesanan" text
+  * All icons now properly aligned with adjacent text
+
+## UI/UX Improvements
+- Update Twitter icon to X logo in footer
+  * Changed from old Twitter bird to new X logo
+  * Updated aria-label and title attributes
+
+- Improve button styling consistency
+  * Added line-height, flex properties for better alignment
+  * SVG icons now use display: block and flex-shrink: 0
+  * Consistent spacing and hover effects
+
+## Cleanup & Maintenance
+- Add cleanup.bat script for removing unnecessary files
+  * Removes documentation files (CHANGELOG, presentations, etc)
+  * Removes temp_retroloved folder
+  * Removes uploaded product images
+  * Removes backup and temporary files
+
+- Add reset_database.sql for database cleanup
+  * Removes all customer data, orders, products
+  * Preserves admin accounts
+  * Proper foreign key constraint handling
+  * Resets AUTO_INCREMENT values
+
+- Update .gitignore
+  * Added temp_retroloved/ to ignore list
+  * Properly excludes sensitive config files
+  * Excludes uploaded images and temporary files
+
+## Documentation
+- Add CLEANUP_INSTRUCTIONS.md with detailed cleanup guide
+- Add GITHUB_PUSH_GUIDE.md with GitHub push instructions
+- Add push_to_github.bat for automated GitHub push
+
+## Technical Details
+- Fixed foreign key constraint issues in database reset
+- Proper deletion order: notifications → order_history → order_items → orders
+- Used DELETE instead of TRUNCATE for tables with FK constraints
+- All changes tested and verified working
+
+## Files Modified
+- admin/product-add.php (image upload redesign, UI improvements)
+- customer/profile.php (delete address fix)
+- customer/checkout.php (icon alignment fixes)
+- customer/order-tracking.php (icon alignment fixes)
+- includes/footer.php (Twitter to X logo update)
+- .gitignore (added temp_retroloved exclusion)
+- reset_database.sql (complete rewrite with proper FK handling)
+
+## Files Added
+- cleanup.bat (Windows cleanup script)
+- reset_database.sql (database reset script)
+- CLEANUP_INSTRUCTIONS.md (cleanup documentation)
+- GITHUB_PUSH_GUIDE.md (GitHub push guide)
+- push_to_github.bat (automated push script)
+- COMMIT_MESSAGE.txt (this file)
+
+## Breaking Changes
+None - all changes are backward compatible
+
+## Testing
+- ✅ Image upload tested with multiple images
+- ✅ Delete address functionality verified
+- ✅ Icon alignments checked across all pages
+- ✅ Database reset script tested successfully
+- ✅ Cleanup script tested on Windows
+- ✅ All pages load without errors
+- ✅ Admin login preserved after database reset
+
+## Notes
+- This is a major cleanup and improvement update
+- Recommended to backup before applying database reset
+- All sensitive config files excluded from repository
+- Ready for production deployment
